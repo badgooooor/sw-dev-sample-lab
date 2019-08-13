@@ -1,5 +1,4 @@
 const bcrypt = require('bcrypt');
-const config = require('../backend/config/serverConfig');
 
 module.exports.createTable = `
   CREATE TABLE IF NOT EXISTS users (
