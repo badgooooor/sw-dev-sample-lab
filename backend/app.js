@@ -5,8 +5,6 @@ const mysql = require('mysql2');
 const crypto = require('crypto');
 const dbExec = require('./db-exec'); 
 
-const config = require('./config/serverConfig');
-
 const app = express();
 app.use(cors());
 app.use(bodyParser({ extended: true }));
