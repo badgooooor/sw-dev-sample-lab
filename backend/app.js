@@ -33,11 +33,29 @@ app.get('/', (req, res) => {
 });
 
 app.post('/login', (req, res) => {
-  res.send(req.body);
+  if (!req.body.username || !req.body.password) {
+    res.status(400);
+    res.send({ "message": "Missing field" });
+  }
+
+  db.query(
+    'SELECT * FROM `users` WHERE `username` = ?',
+    [req.body.username],
+    (err, results, fields) => {
+      if (err) res.send({ error: err });
+      let hashedInputPassword = crypto.createHash('md5').update(req.body.password).digest("hex");
+      if (results[0].password === hashedInputPassword) {
+        res.send({ message: "Login successful!" });
+      } else {
+        res.status(401);
+        res.send({ message: "Login failed!" });
+      }
+    }
+  );
 });
 
 app.post('/register', (req, res) => {
-  if (!req.body.password || !req.body.name || !req.body.username) {
+  if (!req.body.password || !req.body.fullname || !req.body.username) {
     res.status(400);
     res.send({ "message": "Missing field" });
   }
