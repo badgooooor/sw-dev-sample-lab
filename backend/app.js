@@ -37,6 +37,11 @@ app.post('/login', (req, res) => {
 });
 
 app.post('/register', (req, res) => {
+  if (!req.body.password || !req.body.name || !req.body.username) {
+    res.status(400);
+    res.send({ "message": "Missing field" });
+  }
+
   let hash = crypto.createHash('md5').update(req.body.password).digest("hex");
   db.query(
     'INSERT INTO users (fullname, username, password) VALUES (?,?,?)',
